@@ -8,12 +8,17 @@ add_executable(sleep
 add_executable(timer
     timer.c
 )
+add_executable(gpio_interrupt
+    gpio_interrupt.c
+)
 
 pico_set_program_name(task_delay "Task Delay")
 pico_set_program_version(task_delay "0.1")
 pico_set_program_name(task_delay "Sleep")
 pico_set_program_version(task_delay "0.1")
 pico_set_program_name(task_delay "Timer")
+pico_set_program_version(task_delay "0.1")
+pico_set_program_name(task_delay "GPIO Interrupt")
 pico_set_program_version(task_delay "0.1")
 
 # Modify the below lines to enable/disable output over UART/USB.
@@ -24,6 +29,8 @@ pico_enable_stdio_uart(sleep 0)
 pico_enable_stdio_usb(sleep 1)
 pico_enable_stdio_uart(timer 0)
 pico_enable_stdio_usb(timer 1)
+pico_enable_stdio_uart(gpio_interrupt 0)
+pico_enable_stdio_usb(gpio_interrupt 1)
 
 # Add the libraries to the build
 target_link_libraries(task_delay PRIVATE
@@ -44,6 +51,12 @@ target_link_libraries(timer PRIVATE
   pico_async_context_freertos
   FreeRTOS-Kernel-Heap4
 )
+target_link_libraries(gpio_interrupt PRIVATE
+  pico_stdlib
+  pico_multicore
+  pico_async_context_freertos
+  FreeRTOS-Kernel-Heap4
+)
 
 # The CYW43 is the Wifi/Bluetooth module. If the board is set to pico_w, this
 # variable will be set and the wireless libraries added.
@@ -58,11 +71,15 @@ if(PICO_CYW43_SUPPORTED)
     target_link_libraries(timer PRIVATE
         pico_cyw43_arch_none
     )
+    target_link_libraries(gpio_interrupt PRIVATE
+        pico_cyw43_arch_none
+    )
 endif()
 
 # Another pico macro which generates the uf2 file in addition to the elf
 pico_add_extra_outputs(task_delay)
 pico_add_extra_outputs(sleep)
 pico_add_extra_outputs(timer)
+pico_add_extra_outputs(gpio_interrupt)
 
-add_custom_target(flash picotool load -f $<TARGET_FILE:sleep> DEPENDS sleep)
+add_custom_target(flash picotool load -f $<TARGET_FILE:gpio_interrupt> DEPENDS gpio_interrupt)
