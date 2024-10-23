@@ -65,4 +65,4 @@ pico_add_extra_outputs(task_delay)
 pico_add_extra_outputs(sleep)
 pico_add_extra_outputs(timer)
 
-add_custom_target(flash picotool load -f $<TARGET_FILE:task_delay> DEPENDS task_delay)
+add_custom_target(flash picotool load -f $<TARGET_FILE:sleep> DEPENDS sleep)
