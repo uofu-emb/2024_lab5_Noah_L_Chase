@@ -1,12 +1,21 @@
 #include <stdio.h>
 #include <pico/stdlib.h>
 #include <pico/sync.h>
+#include "realtime.h"
 
 int toggle = 1;
 void irq_callback(uint gpio, uint32_t event_mask)
 {
     if (gpio != IN_PIN) return;
     toggle = !toggle;
+    for (int i = 0; i < 8000; i++) {
+        for (int j = 2; j <= i/2; j++) {
+            if (i % j == 0) {
+                i++;
+                break;
+            }
+        }
+    }
     if (event_mask & GPIO_IRQ_EDGE_RISE) {
         gpio_put(OUT_PIN, true);
     } else if (event_mask & GPIO_IRQ_EDGE_FALL) {

@@ -47,7 +47,7 @@ include(${FREERTOS_PATH}/portable/ThirdParty/GCC/RP2040/FreeRTOS_Kernel_import.c
 include(unity.cmake)
 
 # This defines your project name, you can name it anything you want.
-project(myproject C CXX ASM)
+project(realtime C CXX ASM)
 
 # These are some macros from the pico SDK that do some setup.
 pico_sdk_init()

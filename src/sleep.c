@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <pico/stdlib.h>
+#include "realtime.h"
 
 int main(void)
 {
@@ -12,6 +13,14 @@ int main(void)
     while (true) {
         toggle = !toggle;
         gpio_put(OUT_PIN, toggle);
+        for (int i = 0; i < 8000; i++) {
+            for (int j = 2; j <= i/2; j++) {
+                if (i % j == 0) {
+                    i++;
+                    break;
+                }
+            }
+        }
         sleep_ms(DELAY_MS);
     }
 }
